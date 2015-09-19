@@ -19,12 +19,14 @@ namespace Pacman
         public Direction inputDirection;
         private int defaultVelocity;
         private float rotation;
+        public Boolean gameOver;
 
         public PacmanSprite(Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity) : base(p0, p1, p, s, screenWidth, screenHeight, velocity, Color.White)
         {
             inputDirection = direction;
             defaultVelocity = velocity;
             rotation = 0;
+            gameOver = false;
         }
 
         public static PacmanSprite create(Game game, GraphicsDeviceManager graphics)
@@ -37,6 +39,12 @@ namespace Pacman
 
         public void Update(GameTime gameTime, KeyboardState keyboardState)
         {
+            if (gameOver)
+            {
+                texture = texture1;
+                return;
+            }
+
             if (keyboardState.IsKeyDown(Keys.Left))
                 inputDirection = Direction.Left;
             if (keyboardState.IsKeyDown(Keys.Right))
@@ -74,10 +82,10 @@ namespace Pacman
             foreach (var ghost in ghosts)
             {
                 if (
-                    this.position.X + this.size.X > ghost.position.X &&
-                    this.position.X < ghost.position.X + ghost.size.X &&
-                    this.position.Y + this.size.Y > ghost.position.Y &&
-                    this.position.Y < ghost.position.Y + ghost.size.Y
+                    this.position.X + this.size.X/2 > ghost.position.X &&
+                    this.position.X < ghost.position.X + ghost.size.X/2 &&
+                    this.position.Y + this.size.Y/2 > ghost.position.Y/2 &&
+                    this.position.Y < ghost.position.Y + ghost.size.Y/2
                 ) {
                     collision = true;
                     break;

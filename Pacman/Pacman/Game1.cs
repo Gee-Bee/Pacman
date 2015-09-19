@@ -99,7 +99,13 @@ namespace Pacman
             foreach (var ghostSprite in ghostSprites)
                 ghostSprite.Update(gameTime);
 
-            //if (pacmanSprite.GhostCollision(ghostSprites))
+            if (pacmanSprite.GhostCollision(ghostSprites))
+            {
+                pacmanSprite.gameOver = true;
+                foreach (var ghostSprite in ghostSprites)
+                    ghostSprite.Stop();
+
+            }
 
 
             base.Update(gameTime);
