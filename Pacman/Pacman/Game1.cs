@@ -28,6 +28,7 @@ namespace Pacman
         public SpriteBatch spriteBatch;
 
         PacmanSprite pacmanSprite;
+        GhostSprite[] ghostSprites;
 
         public Game1()
         {
@@ -58,6 +59,13 @@ namespace Pacman
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             pacmanSprite = PacmanSprite.create(this, graphics);
+            ghostSprites = new GhostSprite[] {                
+                GhostSprite.create(this, graphics, Color.Thistle),
+                GhostSprite.create(this, graphics, Color.SteelBlue),
+                GhostSprite.create(this, graphics, Color.Blue),
+                GhostSprite.create(this, graphics, Color.Violet),
+                GhostSprite.create(this, graphics, Color.Turquoise)
+            };
 
         }
 
@@ -69,6 +77,8 @@ namespace Pacman
         {
             // TODO: Unload any non ContentManager content here
             pacmanSprite.Dispose();
+            foreach (var ghostSprite in ghostSprites)
+                ghostSprite.Dispose();
             spriteBatch.Dispose();
         }
 
@@ -86,6 +96,11 @@ namespace Pacman
             // TODO: Add your update logic here
             KeyboardState keyboardState = Keyboard.GetState();
             pacmanSprite.Update(gameTime, keyboardState);
+            foreach (var ghostSprite in ghostSprites)
+                ghostSprite.Update(gameTime);
+
+            //if (pacmanSprite.GhostCollision(ghostSprites))
+
 
             base.Update(gameTime);
         }
@@ -101,6 +116,8 @@ namespace Pacman
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             pacmanSprite.Draw(gameTime, spriteBatch);
+            foreach (var ghostSprite in ghostSprites)
+                ghostSprite.Draw(gameTime, spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

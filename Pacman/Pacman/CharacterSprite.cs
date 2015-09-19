@@ -21,12 +21,13 @@ namespace Pacman
         public Vector2 position;
         public Vector2 size;
         public int velocity;
+        private Color color;
 
         public Vector2 screenSize;
 
         public Direction direction;
 
-        public CharacterSprite(Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity)
+        public CharacterSprite(Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity, Color color)
         {
             texture = texture0 = p0;
             texture1 = p1;
@@ -35,6 +36,7 @@ namespace Pacman
             direction = Direction.Right;
             position = screenSize / 2;
             this.velocity = velocity;
+            this.color = color;
         }
 
         public void Dispose()
@@ -69,27 +71,32 @@ namespace Pacman
             position += Movement(direction);
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState)
+        public void Update(GameTime gameTime)
         {
             Move();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, float rotation)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, float rotation = 0)
         {
             if (gameTime.TotalGameTime.Milliseconds % 250 == 0)
                 if (texture == texture1)
                     texture = texture0;
                 else texture = texture1;
 
-            spriteBatch.Draw(texture, position, null, Color.White, rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(texture, position, null, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1);
         }
 
-        protected bool CanMove(Direction direction)
+        protected bool HitBorder(Direction direction)
         {
-            return !(
+            return (
                 position.X - size.X/2 <= 0 && direction == Direction.Left || position.X + size.X/2 >= screenSize.X && direction == Direction.Right || 
                 position.Y - size.Y/2 <= 0 && direction == Direction.Up   || position.Y + size.Y/2 >= screenSize.Y && direction == Direction.Down
             );
+        }
+
+        public void Stop()
+        {
+            this.velocity = 0;
         }
 
 

@@ -20,7 +20,7 @@ namespace Pacman
         private int defaultVelocity;
         private float rotation;
 
-        public PacmanSprite(Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity) : base(p0, p1, p, s, screenWidth, screenHeight, velocity)
+        public PacmanSprite(Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity) : base(p0, p1, p, s, screenWidth, screenHeight, velocity, Color.White)
         {
             inputDirection = direction;
             defaultVelocity = velocity;
@@ -46,9 +46,9 @@ namespace Pacman
             if (keyboardState.IsKeyDown(Keys.Up))
                 inputDirection = Direction.Up;
 
-            if (CanMove(inputDirection))
+            if (!HitBorder(inputDirection))
                 direction = inputDirection;
-            if (CanMove(direction)) {
+            if (!HitBorder(direction)) {
                 velocity = defaultVelocity;
                switch (direction)
                 {
@@ -59,16 +59,32 @@ namespace Pacman
                 }
             }
             else
-                velocity = 0;
+                Stop();
 
-            base.Update(gameTime, keyboardState);
+            base.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
             base.Draw(gameTime, spriteBatch, rotation);
         }
-        
-        
+
+        public bool GhostCollision(GhostSprite[] ghosts)
+        {   
+            bool collision = false;
+            foreach (var ghost in ghosts)
+            {
+                if (
+                    this.position.X + this.size.X > ghost.position.X &&
+                    this.position.X < ghost.position.X + ghost.size.X &&
+                    this.position.Y + this.size.Y > ghost.position.Y &&
+                    this.position.Y < ghost.position.Y + ghost.size.Y
+                ) {
+                    collision = true;
+                    break;
+                }
+            }
+            return collision;
+        }
         
 
     }
