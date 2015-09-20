@@ -17,8 +17,8 @@ namespace Pacman
     {
         private static Random random = new Random();
 
-        public GhostSprite(Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity, Color color)
-            : base(p0, p1, p, s, screenWidth, screenHeight, velocity, color)
+        public GhostSprite(Game1 game, Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity, Color color)
+            : base(game, p0, p1, p, s, screenWidth, screenHeight, velocity, color)
         {
             position = new Vector2(
                 random.Next(0 + (int)Math.Ceiling(size.X / 2), screenWidth - (int)Math.Ceiling(size.X / 2)), 
@@ -26,9 +26,9 @@ namespace Pacman
             );
         }
 
-        public static GhostSprite create(Game game, GraphicsDeviceManager graphics, Color color)
+        public static GhostSprite create(Game1 game, GraphicsDeviceManager graphics, Color color)
         {
-            GhostSprite ghostSprite = new GhostSprite(game.Content.Load<Texture2D>("Sprites/ghost0"), game.Content.Load<Texture2D>("Sprites/ghost1"),
+            GhostSprite ghostSprite = new GhostSprite(game, game.Content.Load<Texture2D>("Sprites/ghost0"), game.Content.Load<Texture2D>("Sprites/ghost1"),
                 Vector2.Zero, new Vector2(40f, 40f),
                 graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, 2, color);
             return ghostSprite;

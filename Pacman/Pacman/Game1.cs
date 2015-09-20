@@ -19,6 +19,12 @@ namespace Pacman
         Left,
     }
 
+    public enum GameState
+    {
+        Play,
+        GameOver
+    }
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -29,6 +35,7 @@ namespace Pacman
 
         PacmanSprite pacmanSprite;
         GhostSprite[] ghostSprites;
+        public GameState gameState;
 
         public Game1()
         {
@@ -47,6 +54,7 @@ namespace Pacman
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            gameState = GameState.Play;
         }
 
         /// <summary>
@@ -100,13 +108,7 @@ namespace Pacman
                 ghostSprite.Update(gameTime);
 
             if (pacmanSprite.GhostCollision(ghostSprites))
-            {
-                pacmanSprite.gameOver = true;
-                foreach (var ghostSprite in ghostSprites)
-                    ghostSprite.Stop();
-
-            }
-
+                gameState = GameState.GameOver;
 
             base.Update(gameTime);
         }
