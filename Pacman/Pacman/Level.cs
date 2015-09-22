@@ -21,6 +21,9 @@ namespace Pacman
         static int elWidth = 40;
         static int elHeight = 40;
 
+        public int pelletMax;
+        public int pelletEaten;
+
         public Level(Game1 game, int width, int height)
         {
             this.game = game;
@@ -42,6 +45,7 @@ namespace Pacman
                     {
                         case 'P':
                             els[i,j] = PelletSprite.create(game);
+                            pelletMax += 1;
                             break;
                     }
                 }
@@ -55,38 +59,44 @@ namespace Pacman
 
         public void Update()
         {
-            for (int i = 0; i < els.GetUpperBound(0); i++)
-                for(int j = 0; j < els.GetUpperBound(1); j++)
-                {
-                    LevelElement el = els[i,j];
-                    if (el is PelletSprite && isEaten(new Vector2(j * elWidth, i * elHeight) + el.offset))
-                        els[i,j] = null;
-                }
+            int pacmanI = (int)(game.pacmanSprite.position / PacmanSprite.size).Y;
+            int pacmanJ = (int)(game.pacmanSprite.position / PacmanSprite.size).X;
+            LevelElement el = els[pacmanI, pacmanJ];
+            if (el is PelletSprite)
+                EatPellet((PelletSprite)el, pacmanI, pacmanJ);
+        }
+
+        private void EatPellet(PelletSprite pellet, int i, int j)
+        {
+            Vector2 pelletPosition = new Vector2(j * elWidth, i * elHeight) + pellet.offset;
+            int offset = 10;
+            if
+            (
+                game.pacmanSprite.position.X + offset > pelletPosition.X &&
+                game.pacmanSprite.position.X - offset < pelletPosition.X + PelletSprite.size.X &&
+                game.pacmanSprite.position.Y + offset > pelletPosition.Y &&
+                game.pacmanSprite.position.Y - offset < pelletPosition.Y + PelletSprite.size.Y
+            )
+            {
+                pelletEaten += 1;
+                game.pacmanSprite.eating = true;
+                els[i, j] = null;
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             for (int i = 0; i <= els.GetUpperBound(0); i++)
-                for (int j = 0; j <= els.GetUpperBound(1); j++ )
+                for (int j = 0; j <= els.GetUpperBound(1); j++)
                 {
                     LevelElement el = els[i, j];
-                    if (el != null){
+                    if (el != null)
+                    {
                         Vector2 position = new Vector2(j * elWidth, i * elHeight) + el.offset;
                         spriteBatch.Draw(el.texture, position, Color.White);
                     }
                 }
-        }
 
-        public bool isEaten(Vector2 pelletPosition)
-        {
-            PacmanSprite pacman = game.pacmanSprite;
-            int offset = 10;
-            return (
-                pacman.position.X + offset > pelletPosition.X &&
-                pacman.position.X - offset < pelletPosition.X + PelletSprite.size.X &&
-                pacman.position.Y + offset > pelletPosition.Y &&
-                pacman.position.Y - offset < pelletPosition.Y + PelletSprite.size.Y
-            );
         }
 
     }

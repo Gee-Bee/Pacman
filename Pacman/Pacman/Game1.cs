@@ -71,11 +71,11 @@ namespace Pacman
 
             pacmanSprite = PacmanSprite.create(this, graphics);
             ghostSprites = new GhostSprite[] {                
-                //GhostSprite.create(this, graphics, Color.Thistle),
-                //GhostSprite.create(this, graphics, Color.SteelBlue),
-                //GhostSprite.create(this, graphics, Color.Blue),
-                //GhostSprite.create(this, graphics, Color.Violet),
-                //GhostSprite.create(this, graphics, Color.Turquoise)
+                GhostSprite.create(this, graphics, Color.Thistle),
+                GhostSprite.create(this, graphics, Color.SteelBlue),
+                GhostSprite.create(this, graphics, Color.Blue),
+                GhostSprite.create(this, graphics, Color.Violet),
+                GhostSprite.create(this, graphics, Color.Turquoise)
             };
             level = Level.create(this, graphics);
 
@@ -134,7 +134,7 @@ namespace Pacman
             pacmanSprite.Draw(gameTime, spriteBatch);
             foreach (var ghostSprite in ghostSprites)
                 ghostSprite.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(scoreFont, "" + pacmanSprite.position.X + " / " + pacmanSprite.position.Y, new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(scoreFont, "Wynik: " + level.pelletEaten + " / " + level.pelletMax, new Vector2(10, 10), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

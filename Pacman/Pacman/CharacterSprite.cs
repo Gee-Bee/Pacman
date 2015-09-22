@@ -82,10 +82,6 @@ namespace Pacman
             }
             else
             {
-                if (gameTime.TotalGameTime.Milliseconds % 250 == 0)
-                    if (texture == texture1)
-                        texture = texture0;
-                    else texture = texture1;
                 if (MovableDirection(requestedDirection))
                     direction = requestedDirection;
                 Move();
@@ -116,6 +112,13 @@ namespace Pacman
                 (direction == Direction.Up || direction == Direction.Down) && (position.X - size.X/2) % size.X == 0 ||    
                 (direction == Direction.Left || direction == Direction.Right) && (position.Y - size.Y/2) % size.Y == 0
             );
+        }
+
+        public void toggleTexture(GameTime gameTime)
+        {
+            if (texture == texture1)
+                texture = texture0;
+            else texture = texture1;
         }
 
         public void Stop()

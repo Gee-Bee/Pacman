@@ -34,7 +34,10 @@ namespace Pacman
 
         public void Update(GameTime gameTime)
         {
-            if (canMove(direction))
+            if (gameTime.TotalGameTime.Milliseconds % 250 == 0)
+                toggleTexture(gameTime);
+
+            if (!canMove(direction))
                 ChangeDirection();
             if (gameTime.TotalGameTime.Milliseconds % random.Next(2000, 5000) == 0)
                 ChangeDirection();
@@ -50,7 +53,7 @@ namespace Pacman
         private void ChangeDirection()
         {
             Array values = Enum.GetValues(typeof(Direction));
-            direction = (Direction)values.GetValue(random.Next(values.Length));
+            requestedDirection = (Direction)values.GetValue(random.Next(values.Length));
         }
 
 

@@ -18,6 +18,7 @@ namespace Pacman
 
         private int defaultVelocity;
         private float rotation;
+        public bool eating;
 
         public PacmanSprite(Game1 game, Texture2D p0, Texture2D p1, int screenWidth, int screenHeight, int velocity)
             : base(game, p0, p1, screenWidth, screenHeight, velocity, Color.White)
@@ -50,6 +51,13 @@ namespace Pacman
 
                 if (canMove(direction))
                 {
+                    if (gameTime.TotalGameTime.Milliseconds % 250 == 0)
+                        if (texture == texture1 && eating)
+                        {
+                            texture = texture0;
+                            eating = false;
+                        }
+                        else texture = texture1;
                     velocity = defaultVelocity;
                     switch (direction)
                     {
