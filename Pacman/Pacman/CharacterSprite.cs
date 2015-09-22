@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Pacman
 {
-    abstract class CharacterSprite
+    public abstract class CharacterSprite
     {
         public Texture2D texture;
         public Texture2D texture0;
@@ -28,7 +28,7 @@ namespace Pacman
 
         public Direction direction;
 
-        public CharacterSprite(Game1 game, Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity, Color color)
+        public CharacterSprite(Game1 game, Texture2D p0, Texture2D p1, Vector2 s, int screenWidth, int screenHeight, int velocity, Color color)
         {
             texture = texture0 = p0;
             texture1 = p1;

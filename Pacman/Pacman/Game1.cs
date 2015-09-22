@@ -33,9 +33,10 @@ namespace Pacman
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
 
-        PacmanSprite pacmanSprite;
-        GhostSprite[] ghostSprites;
+        public PacmanSprite pacmanSprite;
+        public GhostSprite[] ghostSprites;
         public GameState gameState;
+        Level level;
 
         public Game1()
         {
@@ -74,6 +75,7 @@ namespace Pacman
                 GhostSprite.create(this, graphics, Color.Violet),
                 GhostSprite.create(this, graphics, Color.Turquoise)
             };
+            level = Level.create(this, graphics);
 
         }
 
@@ -106,6 +108,7 @@ namespace Pacman
             pacmanSprite.Update(gameTime, keyboardState);
             foreach (var ghostSprite in ghostSprites)
                 ghostSprite.Update(gameTime);
+            level.Update();
 
             if (pacmanSprite.GhostCollision(ghostSprites))
                 gameState = GameState.GameOver;
@@ -119,10 +122,11 @@ namespace Pacman
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            level.Draw(gameTime, spriteBatch);
             pacmanSprite.Draw(gameTime, spriteBatch);
             foreach (var ghostSprite in ghostSprites)
                 ghostSprite.Draw(gameTime, spriteBatch);

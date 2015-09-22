@@ -13,15 +13,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Pacman
 {
-    class PacmanSprite : CharacterSprite
+    public class PacmanSprite : CharacterSprite
     {
 
         public Direction inputDirection;
         private int defaultVelocity;
         private float rotation;
 
-        public PacmanSprite(Game1 game, Texture2D p0, Texture2D p1, Vector2 p, Vector2 s, int screenWidth, int screenHeight, int velocity)
-            : base(game, p0, p1, p, s, screenWidth, screenHeight, velocity, Color.White)
+        public PacmanSprite(Game1 game, Texture2D p0, Texture2D p1, Vector2 s, int screenWidth, int screenHeight, int velocity)
+            : base(game, p0, p1, s, screenWidth, screenHeight, velocity, Color.White)
         {
             inputDirection = direction;
             defaultVelocity = velocity;
@@ -30,10 +30,8 @@ namespace Pacman
 
         public static PacmanSprite create(Game1 game, GraphicsDeviceManager graphics)
         {
-            PacmanSprite pacmanSprite = new PacmanSprite(game, game.Content.Load<Texture2D>("Sprites/pacman0"), game.Content.Load<Texture2D>("Sprites/pacman1"),
-                Vector2.Zero, new Vector2(40f, 40f),
-                graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, 2);
-            return pacmanSprite;
+            return new PacmanSprite(game, game.Content.Load<Texture2D>("Sprites/pacman0"), game.Content.Load<Texture2D>("Sprites/pacman1"),
+                new Vector2(40f, 40f), graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, 2);
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState)
