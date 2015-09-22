@@ -80,6 +80,8 @@ namespace Pacman
             {
                 pelletEaten += 1;
                 game.pacmanSprite.eating = true;
+                game.am.Play(1, 1f, 0f);
+
                 els[i, j] = null;
             }
         }

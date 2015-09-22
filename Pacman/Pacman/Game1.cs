@@ -39,6 +39,8 @@ namespace Pacman
         Level level;
 
         SpriteFont scoreFont;
+        public SoundEffect am;
+        public SoundEffect bum;
 
         public Game1()
         {
@@ -80,7 +82,8 @@ namespace Pacman
             level = Level.create(this, graphics);
 
             scoreFont = Content.Load<SpriteFont>(@"Fonts\Score");
-
+            am = Content.Load<SoundEffect>("Audio/am");
+            bum = Content.Load<SoundEffect>("Audio/bum");
         }
 
         /// <summary>
@@ -115,7 +118,10 @@ namespace Pacman
             level.Update();
 
             if (pacmanSprite.GhostCollision(ghostSprites))
+            {
                 gameState = GameState.GameOver;
+                bum.Play();
+            }
 
             base.Update(gameTime);
         }
