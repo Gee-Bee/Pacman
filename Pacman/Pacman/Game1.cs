@@ -39,6 +39,7 @@ namespace Pacman
         Level level;
 
         SpriteFont scoreFont;
+        SpriteFont gameOverFont;
         public SoundEffect am;
         public SoundEffect bum;
 
@@ -81,7 +82,8 @@ namespace Pacman
             };
             level = Level.create(this, graphics);
 
-            scoreFont = Content.Load<SpriteFont>(@"Fonts\Score");
+            scoreFont = Content.Load<SpriteFont>("Fonts/Score");
+            gameOverFont = Content.Load<SpriteFont>("Fonts/GameOver");
             am = Content.Load<SoundEffect>("Audio/am");
             bum = Content.Load<SoundEffect>("Audio/bum");
         }
@@ -141,6 +143,8 @@ namespace Pacman
             foreach (var ghostSprite in ghostSprites)
                 ghostSprite.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(scoreFont, "Wynik: " + level.pelletEaten + " / " + level.pelletMax, new Vector2(10, 10), Color.White);
+            if (gameState == GameState.GameOver)
+                spriteBatch.DrawString(gameOverFont, "GAME OVER", new Vector2(40, 60), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);
