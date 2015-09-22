@@ -18,7 +18,6 @@ namespace Pacman
     {
         LevelElement[,] els;
         Game1 game;
-        PacmanSprite pacman;
         static int elWidth = 40;
         static int elHeight = 40;
 
@@ -81,12 +80,12 @@ namespace Pacman
         public bool isEaten(Vector2 pelletPosition)
         {
             PacmanSprite pacman = game.pacmanSprite;
-            int offset = 0;
+            int offset = 10;
             return (
-                pacman.position.X + pacman.size.X - offset > pelletPosition.X &&
-                pacman.position.X < pelletPosition.X + PelletSprite.size.X - offset &&
-                pacman.position.Y + pacman.size.Y - offset > pelletPosition.Y &&
-                pacman.position.Y < pelletPosition.Y + PelletSprite.size.Y - offset
+                pacman.position.X + offset > pelletPosition.X &&
+                pacman.position.X - offset < pelletPosition.X + PelletSprite.size.X &&
+                pacman.position.Y + offset > pelletPosition.Y &&
+                pacman.position.Y - offset < pelletPosition.Y + PelletSprite.size.Y
             );
         }
 

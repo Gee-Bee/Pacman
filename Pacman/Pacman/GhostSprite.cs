@@ -17,24 +17,24 @@ namespace Pacman
     {
         private static Random random = new Random();
 
-        public GhostSprite(Game1 game, Texture2D p0, Texture2D p1, Vector2 s, int screenWidth, int screenHeight, int velocity, Color color)
-            : base(game, p0, p1, s, screenWidth, screenHeight, velocity, color)
+        public GhostSprite(Game1 game, Texture2D p0, Texture2D p1, int screenWidth, int screenHeight, int velocity, Color color)
+            : base(game, p0, p1, screenWidth, screenHeight, velocity, color)
         {
             position = new Vector2(
-                random.Next(0 + (int)Math.Ceiling(size.X / 2), screenWidth - (int)Math.Ceiling(size.X / 2)), 
+                random.Next(0 + (int)Math.Ceiling(size.X / 2), screenWidth - (int)Math.Ceiling(size.X / 2)),
                 random.Next(0 + (int)Math.Ceiling(size.Y / 2), screenHeight - (int)Math.Ceiling(size.Y / 2))
-            );
+            ) / size * size - size / 2;
         }
 
         public static GhostSprite create(Game1 game, GraphicsDeviceManager graphics, Color color)
         {
             return new GhostSprite(game, game.Content.Load<Texture2D>("Sprites/ghost0"), game.Content.Load<Texture2D>("Sprites/ghost1"),
-                new Vector2(40f, 40f), graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, 2, color);
+                graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, 2, color);
         }
 
         public void Update(GameTime gameTime)
         {
-            if (HitBorder(direction))
+            if (canMove(direction))
                 ChangeDirection();
             if (gameTime.TotalGameTime.Milliseconds % random.Next(2000, 5000) == 0)
                 ChangeDirection();

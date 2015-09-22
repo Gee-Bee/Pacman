@@ -19,7 +19,7 @@ namespace Pacman
         public Texture2D texture0;
         public Texture2D texture1;
         public Vector2 position;
-        public Vector2 size;
+        public static Vector2 size = new Vector2(40, 40);
         public int velocity;
         private Color color;
         protected Game1 game;
@@ -27,15 +27,15 @@ namespace Pacman
         public Vector2 screenSize;
 
         public Direction direction;
+        public Direction requestedDirection;
 
-        public CharacterSprite(Game1 game, Texture2D p0, Texture2D p1, Vector2 s, int screenWidth, int screenHeight, int velocity, Color color)
+        public CharacterSprite(Game1 game, Texture2D p0, Texture2D p1, int screenWidth, int screenHeight, int velocity, Color color)
         {
             texture = texture0 = p0;
             texture1 = p1;
-            size = s;
             screenSize = new Vector2(screenWidth, screenHeight);
-            direction = Direction.Right;
-            position = screenSize / 2;
+            direction = requestedDirection = Direction.Right;
+            position = screenSize / 2 / size * size - size /2;
             this.velocity = velocity;
             this.color = color;
             this.game = game;
@@ -86,6 +86,8 @@ namespace Pacman
                     if (texture == texture1)
                         texture = texture0;
                     else texture = texture1;
+                if (MovableDirection(requestedDirection))
+                    direction = requestedDirection;
                 Move();
             }
         }
@@ -95,7 +97,12 @@ namespace Pacman
             spriteBatch.Draw(texture, position, null, color, rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1);
         }
 
-        protected bool HitBorder(Direction direction)
+        protected bool canMove(Direction direction)
+        {
+            return !HitBorder(direction);
+        }
+
+        private bool HitBorder(Direction direction)
         {
             return (
                 position.X - size.X / 2 <= 0 && direction == Direction.Left || position.X + size.X / 2 >= screenSize.X && direction == Direction.Right ||
@@ -103,9 +110,28 @@ namespace Pacman
             );
         }
 
+        private bool MovableDirection(Direction direction)
+        {
+            return (
+                (direction == Direction.Up || direction == Direction.Down) && (position.X - size.X/2) % size.X == 0 ||    
+                (direction == Direction.Left || direction == Direction.Right) && (position.Y - size.Y/2) % size.Y == 0
+            );
+        }
+
         public void Stop()
         {
             this.velocity = 0;
+        }
+
+
+        public bool Collides(CharacterSprite other, int offset)
+        {
+            return (
+                this.position.X + size.X - offset > other.position.X &&
+                this.position.X < other.position.X + CharacterSprite.size.X - offset &&
+                this.position.Y + size.Y - offset > other.position.Y &&
+                this.position.Y < other.position.Y + size.Y - offset
+            );
         }
 
 
